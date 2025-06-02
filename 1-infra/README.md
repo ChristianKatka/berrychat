@@ -16,7 +16,7 @@ cdk deploy --all -c env=production
    "Sid": "AllowCloudFrontOAI",
    "Effect": "Allow",
    "Principal": {
-   "CanonicalUser": "5393d9466f1d98e6ae3d9ff8d7f657f1dfa4bba1b765d343fd7bde8f602e1b80c2131a27e992376d323f2fc93e5c6e6a"
+   "CanonicalUser": "1f75993e0d27fe1f7632b0c15c12423715769903f98c6dd45f9e7ed4efdbff97990cc0459d3e3e5fe33ced41e1fa7677"
    },
    "Action": "s3:GetObject",
    "Resource": "arn:aws:s3:::berrychat-staging---app/\*"
