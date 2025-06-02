@@ -51,9 +51,10 @@ export const SideNav = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <div className="flex h-screen w-screen bg-background">
+    <div className="flex h-screen w-screen">
       {/* Desktop Sidebar */}
       <aside
+        style={{ backgroundColor: "#212327" }}
         className={cn(
           "hidden lg:block border-r transition-all duration-300 ease-in-out",
           isCollapsed ? "w-20" : "w-64"
