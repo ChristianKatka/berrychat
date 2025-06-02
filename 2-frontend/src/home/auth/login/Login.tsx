@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useStore } from "../../store/state";
 import { Link } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 
 export const Login = () => {
-  const { login } = useStore().auth;
+  const { login, isLoginLoading } = useStore().auth;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const onLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -79,12 +79,23 @@ export const Login = () => {
               Lost Password?
             </a>
           </div>
+
           <button
             type="submit"
-            className="cursor-pointer w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            disabled={isLoginLoading}
+            className={`cursor-pointer w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition-opacity ${
+              isLoginLoading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           >
-            Login to your account
+            {isLoginLoading ? (
+              <div className="flex items-center justify-center gap-2">
+                <Loader2 className="animate-spin" size={20} />
+              </div>
+            ) : (
+              "Login to your account"
+            )}
           </button>
+
           <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
             Not registered?{" "}
             <Link

@@ -11,6 +11,13 @@ export const loginFlow = async (
   password: string
 ) => {
   try {
+    set((state) => ({
+      auth: {
+        ...state.auth,
+        isLoginLoading: true,
+      },
+    }));
+
     const res = await loginService(email, password);
 
     console.log("LOGIN RESPONSE::::");
@@ -25,6 +32,8 @@ export const loginFlow = async (
     set((state) => ({
       auth: {
         ...state.auth,
+        isLoginLoading: false,
+
         tokens,
         decodedAccessToken,
         decodedIdToken,
@@ -34,6 +43,7 @@ export const loginFlow = async (
     set((state) => ({
       auth: {
         ...state.auth,
+        isLoginLoading: false,
         tokens: undefined,
         decodedAccessToken: undefined,
         decodedIdToken: undefined,

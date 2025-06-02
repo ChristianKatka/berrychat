@@ -1,5 +1,3 @@
-"use client";
-
 import { ChevronRight, LogOut, Menu, MessageCirclePlus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback } from "../../../components/ui/avatar";

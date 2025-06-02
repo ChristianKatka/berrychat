@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { TopLoader } from "./components/ui/topLoader";
 import { useStore } from "./home/store/state";

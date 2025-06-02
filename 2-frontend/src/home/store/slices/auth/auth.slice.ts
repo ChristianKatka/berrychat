@@ -8,6 +8,7 @@ import { registerFlow } from "./flows/register-flow";
 export interface AuthSlice {
   auth: {
     isLoading: boolean;
+    isLoginLoading: boolean;
     tokens?: any;
     decodedAccessToken?: any;
     decodedIdToken?: any;
@@ -27,6 +28,7 @@ export const createAuthSlice: StateCreator<AuthSlice, [], [], AuthSlice> = (
 ) => ({
   auth: {
     isLoading: true,
+    isLoginLoading: false,
     tokens: undefined,
     decodedAccessToken: undefined,
     decodedIdToken: undefined,
