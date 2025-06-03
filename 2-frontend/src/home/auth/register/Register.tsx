@@ -15,7 +15,7 @@ export const Register = () => {
   };
 
   return (
-    <main className="flex w-full items-center justify-center mt-5">
+    <main className="flex w-full items-center justify-center mt-40">
       <div
         className="w-full max-w-sm p-8 border rounded-lg shadow-sm "
         style={{ backgroundColor: "rgb(41 40 46)" }}
