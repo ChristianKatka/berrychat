@@ -1,11 +1,25 @@
 import { Request, Response } from "express";
-import { anthropic } from "../instances/anthropic"; // assumes you already set up the SDK with your API key
+import Anthropic from "@anthropic-ai/sdk";
+import { v4 as uuidv4 } from "uuid";
+
+const client = new Anthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY, // Make sure your key is set
+});
+
+/**
+ * Helper to format and send SSE messages in consistent format.
+ */
+function sendSSE(res: Response, event: string, data: any) {
+  const payload = JSON.stringify({ event, data });
+  res.write(`event: message\n`);
+  res.write(`data: ${payload}\n\n`);
+}
 
 export const sendMessageController = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { text } = req.body; // or req.body if you change to POST
+  const { text } = req.body;
 
   if (typeof text !== "string") {
     res.status(400).json({ error: "Missing 'text' parameter" });
@@ -14,36 +28,69 @@ export const sendMessageController = async (
 
   // Set SSE headers
   res.setHeader("Content-Type", "text/event-stream");
-  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Cache-Control", "no-cache, no-transform");
   res.setHeader("Connection", "keep-alive");
+  res.setHeader("X-Accel-Buffering", "no");
+  res.flushHeaders?.();
+  res.write(":\n\n"); // Keep-alive ping
 
-  res.flushHeaders(); // flush immediately
+  // Simulated metadata
+  const threadId = uuidv4();
+  const runId = uuidv4();
+
+  // Send initial start and metadata events
+  sendSSE(res, "start", "Claude stream started");
+  sendSSE(res, "metadata", {
+    thread: {
+      id: threadId,
+      metadata: {},
+      user_id: "demo-user-id",
+      status: "streaming",
+      created_at: new Date().toISOString(),
+    },
+    run_id: runId,
+  });
 
   try {
-    const stream = anthropic.messages.stream({
-      model: "claude-3-haiku-20240307", // or opus if you want
-      max_tokens: 100,
+    const stream = await client.messages.stream({
+      model: "claude-3-haiku-20240307", // ✅ Cheaper model
+      max_tokens: 1024,
       temperature: 1,
-      system: "Respond only with short poems.",
       messages: [{ role: "user", content: text }],
+      system: "Respond only with short poems.",
     });
 
+    let fullText = "";
+
     stream.on("text", (chunk) => {
-      res.write(`data: ${chunk}\n\n`);
+      fullText += chunk;
+      sendSSE(res, "text", { assistantResponse: fullText });
     });
 
     stream.on("end", () => {
-      res.write(`event: done\ndata: [DONE]\n\n`);
+      sendSSE(res, "end", "Claude stream ended");
       res.end();
+      console.log("Stream complete.");
     });
 
     stream.on("error", (err) => {
-      console.error("Anthropic stream error:", err);
-      res.write(`event: error\ndata: ${err.message}\n\n`);
+      console.error("Claude SSE stream error:", err);
+      sendSSE(res, "error", err.message);
       res.end();
     });
+
+    // Cancel the stream on client disconnect
+    req.on("close", () => {
+      console.log("Client disconnected during Claude stream");
+      stream.controller?.abort();
+    });
   } catch (err: any) {
-    console.error("Anthropic stream failed:", err);
-    res.status(500).json({ error: err.message });
+    console.error("Claude stream failed:", err);
+    if (!res.headersSent) {
+      res.status(500).json({ error: err.message });
+    } else {
+      sendSSE(res, "error", err.message);
+      res.end();
+    }
   }
 };
