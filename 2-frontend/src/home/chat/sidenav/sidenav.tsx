@@ -223,7 +223,7 @@ export const SideNav = ({ children }: { children: React.ReactNode }) => {
             <Button className="mt-3 mx-4" onClick={logout}>
               Logout
             </Button>
-            <div className="flex items-center p-3 shrink-0">
+            <div className="flex items-center p-3 shrink-0 pb-24 md:pb-3">
               <Avatar>
                 <AvatarFallback>
                   {getInitials(

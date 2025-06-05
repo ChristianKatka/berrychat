@@ -14,10 +14,10 @@ export const ChatDiscussion = () => {
   }, [discussion]);
 
   return (
-    <main className="flex flex-col items-center h-screen w-screen p-4 sm:p-7 transition-[width,height,top,left] duration-300 ease-in-out">
+    <main className="flex flex-col items-center h-screen w-screen p-4 sm:p-7">
       <p>chat header</p>
 
-      <div className="flex flex-1 w-full max-w-[700px] flex-col justify-between rounded-md p-3.5 overflow-hidden">
+      <div className="flex flex-1 w-full max-w-[700px] flex-col justify-between rounded-md overflow-hidden">
         {/* Scrollable Top Item */}
         <section
           ref={scrollContainerRef}
@@ -27,7 +27,7 @@ export const ChatDiscussion = () => {
         </section>
 
         {/* Bottom Item */}
-        <section className="mt-3.5">
+        <section className="mt-3.5 pb-24 md:pb-0">
           <InputField></InputField>
         </section>
       </div>

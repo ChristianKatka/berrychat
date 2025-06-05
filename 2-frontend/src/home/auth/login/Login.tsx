@@ -15,7 +15,7 @@ export const Login = () => {
   };
 
   return (
-    <main className="flex w-full items-center justify-center mt-40">
+    <main className="flex w-full items-center justify-center mt-20">
       <div
         className="w-full max-w-sm p-8 border rounded-lg shadow-sm "
         style={{ backgroundColor: "rgb(41 40 46)" }}
@@ -23,7 +23,7 @@ export const Login = () => {
         <form className="space-y-6" onSubmit={onLogin}>
           <div className="flex justify-center">
             <img
-              className="rounded-md h-52"
+              className="rounded-md h-32 md:h-48"
               src="/blueberrychat.png"
               alt="logo"
             />
