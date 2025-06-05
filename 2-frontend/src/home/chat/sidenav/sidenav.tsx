@@ -58,8 +58,8 @@ export const SideNav = ({ children }: { children: React.ReactNode }) => {
           isCollapsed ? "w-20" : "w-64"
         )}
       >
-        <main className="h-full">
-          <div className="flex h-full flex-col gap-4 p-4">
+        <main className="h-[100dvh]">
+          <div className="flex h-[100dvh] flex-col gap-4 p-4">
             <div className="flex justify-between items-center">
               {isCollapsed ? null : (
                 <p className="font-bold text-center">Blueberry chat</p>
@@ -223,7 +223,7 @@ export const SideNav = ({ children }: { children: React.ReactNode }) => {
             <Button className="mt-3 mx-4" onClick={logout}>
               Logout
             </Button>
-            <div className="flex items-center p-3 shrink-0 pb-24 md:pb-3">
+            <div className="flex items-center p-3 shrink-0 pb-40 md:pb-3">
               <Avatar>
                 <AvatarFallback>
                   {getInitials(
