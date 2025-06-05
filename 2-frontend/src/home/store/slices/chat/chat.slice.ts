@@ -1,12 +1,13 @@
 import { StateCreator } from "zustand";
-import { Discussion } from "../../../models/discussion";
+import { Message } from "../../../../models/message";
 import { State } from "../../state";
+import { processSendMessageFlow } from "./flows/process-send-message-flow";
 
 export interface ChatSlice {
   chat: {
     threads: any;
     selectedThreadId: any;
-    discussion: Discussion[];
+    discussion: Message[];
     isLoadingThreads: boolean;
     isChatResponseEnded: boolean;
     error: string | null;
@@ -76,15 +77,9 @@ export const createChatSlice: StateCreator<State, [], [], ChatSlice> = (
       // }));
     },
     sendMessage: async (message: string) => {
-      // const contextFromState = get().chat.context;
-      // await processSendStreamedMessageFlow(set, get, message, contextFromState);
-      // // meaby not neccesary, but "force" response ended here, so submit/send button is enabled again
-      // set((state) => ({
-      //   chat: {
-      //     ...state.chat,
-      //     isChatResponseEnded: true,
-      //   },
-      // }));
+      console.log("sendMessage slice");
+
+      await processSendMessageFlow(set, get, message);
     },
     giveFeedBackOnAssistanceResponse: async (
       run_id: string,

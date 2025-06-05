@@ -3,11 +3,8 @@ import { useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { useStore } from "../../store/state";
 
-interface Props {
-  sendMessage: (message: string) => void;
-}
-export const InputField = ({ sendMessage }: Props) => {
-  const { isChatResponseEnded } = useStore().chat;
+export const InputField = () => {
+  const { isChatResponseEnded, sendMessage } = useStore().chat;
 
   const [userInput, setUserInput] = useState("");
 
@@ -21,6 +18,8 @@ export const InputField = ({ sendMessage }: Props) => {
   };
 
   const handleSendMessage = () => {
+    console.log("handleSendMessage");
+
     const trimmed = userInput.trim();
     if (trimmed === "" || !isChatResponseEnded) return;
     sendMessage(userInput);
@@ -40,28 +39,11 @@ export const InputField = ({ sendMessage }: Props) => {
         onKeyDown={handleKeyDown}
       />
       <button
-        onClick={() => sendMessage}
+        onClick={handleSendMessage}
         className="cursor-pointer absolute bottom-2.5 right-2.5 text-white hover:text-gray-300"
       >
         <SendHorizonal size={18} />
       </button>
     </div>
-  );
-
-  return (
-    <section>
-      <div className="flex items-center gap-4 my-3.5">
-        <TextareaAutosize
-          style={{ backgroundColor: "#414045" }}
-          placeholder="Message to Berry"
-          className="flex-grow resize-none rounded-2xl border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-          maxRows={8}
-          minRows={3}
-          value={userInput}
-          onChange={(event) => setUserInput(event.target.value)}
-          onKeyDown={(e) => handleKeyDown(e)}
-        />
-      </div>
-    </section>
   );
 };
