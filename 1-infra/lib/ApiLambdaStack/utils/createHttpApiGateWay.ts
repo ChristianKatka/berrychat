@@ -27,28 +27,7 @@ export const createHttpApiGateWay = (
 
   // Routes with JWT auth
   httpApi.addRoutes({
-    path: "/game-categories",
-    methods: [apigwv2.HttpMethod.GET],
-    integration,
-    authorizer: jwtAuthorizer,
-  });
-
-  httpApi.addRoutes({
-    path: "/game-category",
-    methods: [apigwv2.HttpMethod.POST],
-    integration,
-    authorizer: jwtAuthorizer,
-  });
-
-  httpApi.addRoutes({
-    path: "/games/{categoryId}",
-    methods: [apigwv2.HttpMethod.GET],
-    integration,
-    authorizer: jwtAuthorizer,
-  });
-
-  httpApi.addRoutes({
-    path: "/game",
+    path: "/message",
     methods: [apigwv2.HttpMethod.POST],
     integration,
     authorizer: jwtAuthorizer,
@@ -65,8 +44,5 @@ export const createHttpApiGateWay = (
     });
   };
 
-  corsOnly("/game-categories");
-  corsOnly("/game-category");
-  corsOnly("/games/{categoryId}");
-  corsOnly("/game");
+  corsOnly("/message");
 };

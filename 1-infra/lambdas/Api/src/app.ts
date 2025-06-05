@@ -1,17 +1,15 @@
 import cors from "cors";
 import express, { json, urlencoded } from "express";
-import morgan from "morgan"; // Express logger
-import { router } from "./routers/router"; // We'll modify this below too
+import morgan from "morgan"; // logger
+import { router } from "./routers/router";
 
 const app = express();
 
-// Middleware setup
 app.use(cors());
-app.use(morgan("dev")); // Equivalent to koa-logger
-app.use(json()); // Equivalent to koa-json + koa-bodyparser
-app.use(urlencoded({ extended: true })); // Handle form data
+app.use(morgan());
+app.use(json());
+app.use(urlencoded({ extended: true }));
 
-// Mount routes
 app.use(router);
 
 export { app };
