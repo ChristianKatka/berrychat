@@ -15,15 +15,15 @@ export const Register = () => {
   };
 
   return (
-    <main className="flex w-full items-center justify-center mt-40">
+    <main className="flex w-full items-center justify-center md:mt-20">
       <div
-        className="w-full max-w-sm p-8 border rounded-lg shadow-sm "
+        className="w-full max-w-sm p-8 md:border rounded-lg shadow-sm "
         style={{ backgroundColor: "rgb(41 40 46)" }}
       >
         <form className="space-y-6" onSubmit={onRegister}>
           <div className="flex justify-center">
             <img
-              className="rounded-md h-52"
+              className="rounded-md h-24 md:h-48"
               src="/blueberrychat.png"
               alt="logo"
             />
