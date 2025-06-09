@@ -31,7 +31,7 @@ export const processSendMessageFlow = async (
       message,
       selectedThreadId
     );
-    const { parsedText, citations } = parseClaudeResponse(res);
+    const { parsedText, citations } = parseClaudeResponse(res.claudeResponse);
     // mocking api res for now
     const currentDiscussion = get().chat.discussion;
     const updatedDiscussion: Message[] = [
@@ -46,6 +46,7 @@ export const processSendMessageFlow = async (
     set((state) => ({
       chat: {
         ...state.chat,
+        selectedThreadId: res.threadId,
         discussion: updatedDiscussion,
       },
     }));
