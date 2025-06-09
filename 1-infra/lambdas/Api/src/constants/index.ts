@@ -3,3 +3,5 @@ export const COGNITO_CLIENT_ID = process.env.COGNITO_CLIENT_ID;
 export const ENVIRONMENT_NAME = process.env.ENVIRONMENT_NAME;
 
 export const REGION = "eu-north-1";
+
+export const THREADS_TABLE = `${ENVIRONMENT_NAME}-threads`;

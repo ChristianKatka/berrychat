@@ -2,12 +2,24 @@ import { Request, Response } from "express";
 import { claudeRes } from "../mock/claude-response";
 import { anthropic } from "../instances/anthropic";
 import { randomUUID } from "node:crypto";
+import { createThreadService } from "../services/dynamodb/createThreadService";
 
 export const sendMessageController = async (
   req: Request,
   res: Response
 ): Promise<void> => {
+  const decodedIdToken = (req as any).decodedIdToken;
   const { text, selectedThreadId } = req.body;
+  console.log("decodedIdToken");
+  console.log("decodedIdToken");
+  console.log("decodedIdToken");
+  console.log("decodedIdToken");
+  console.log("decodedIdToken");
+  console.log("decodedIdToken");
+  console.log("decodedIdToken");
+  console.log("decodedIdToken");
+  console.log(decodedIdToken);
+
   let threadId = selectedThreadId;
   if (!selectedThreadId) {
     threadId = randomUUID();
@@ -33,5 +45,13 @@ export const sendMessageController = async (
   //   ],
   // });
 
-  res.json({ claudeResponse: claudeRes, threadId });
+  const fullThread = {
+    claudeResponse: claudeRes,
+    email: decodedIdToken.email,
+    threadId,
+  };
+
+  await createThreadService(fullThread);
+
+  res.json(fullThread);
 };
