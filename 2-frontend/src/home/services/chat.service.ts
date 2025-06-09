@@ -2,7 +2,8 @@ import { API_URL } from "../../constants";
 
 export const sendSendMessageService = async (
   idToken: string,
-  message: string
+  message: string,
+  selectedThreadId: string
 ) => {
   const response = await fetch(`${API_URL}/message`, {
     method: "POST",
@@ -10,7 +11,7 @@ export const sendSendMessageService = async (
       "Content-Type": "application/json",
       Authorization: idToken,
     },
-    body: JSON.stringify({ text: message }),
+    body: JSON.stringify({ text: message, selectedThreadId }),
   });
 
   if (!response.ok) {

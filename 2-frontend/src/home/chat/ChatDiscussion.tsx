@@ -27,7 +27,7 @@ export const ChatDiscussion = () => {
         </section>
 
         {/* Bottom Item */}
-        <section className="mt-3.5 pb-8 md:pb-0">
+        <section className="mt-3.5 pb-8 p-1 mb-2 md:pb-0">
           <InputField></InputField>
         </section>
       </div>

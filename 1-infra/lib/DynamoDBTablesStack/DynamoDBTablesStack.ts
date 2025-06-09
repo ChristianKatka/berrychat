@@ -1,5 +1,6 @@
 import { Stack, StackProps } from "aws-cdk-lib";
 import { Construct } from "constructs";
+import { createThreadsDynamoTable } from "./utils/createThreadsDynamoTable";
 import { createUsersDynamoTable } from "./utils/createUsersDynamoTable";
 
 interface Props extends StackProps {
@@ -13,5 +14,6 @@ export class DynamoDBTablesStack extends Stack {
     const { envName } = props;
 
     createUsersDynamoTable(this, envName);
+    createThreadsDynamoTable(this, envName);
   }
 }

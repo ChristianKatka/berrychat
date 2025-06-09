@@ -10,6 +10,7 @@ export const processSendMessageFlow = async (
   message: string
 ) => {
   const prevDiscussion = get().chat.discussion;
+  const selectedThreadId = get().chat.selectedThreadId;
 
   const newDiscussion: Message[] = [
     ...prevDiscussion,
@@ -25,7 +26,11 @@ export const processSendMessageFlow = async (
   try {
     const idToken = get().auth.tokens.IdToken;
 
-    const res = await sendSendMessageService(idToken, message);
+    const res = await sendSendMessageService(
+      idToken,
+      message,
+      selectedThreadId
+    );
     const { parsedText, citations } = parseClaudeResponse(res);
     // mocking api res for now
     const currentDiscussion = get().chat.discussion;
