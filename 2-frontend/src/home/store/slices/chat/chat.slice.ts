@@ -1,17 +1,19 @@
 import { StateCreator } from "zustand";
-import { Message } from "../../../../models/message";
 import { State } from "../../state";
 import { processSendMessageFlow } from "./flows/process-send-message-flow";
+import { processGetThreadsFlow } from "./flows/process-get-threads-flow";
+import { selectThreadFlow } from "./flows/select-thread-flow";
+import { Message, Thread } from "../../../../models/thread";
 
 export interface ChatSlice {
   chat: {
-    threads: any;
-    selectedThreadId: any;
+    threads: null | { [threadId: string]: Thread };
+    selectedThreadId: null | string;
+    selectedThread: null | Thread;
     discussion: Message[];
     isLoadingThreads: boolean;
-    isChatResponseEnded: boolean;
+    isSendMessageLoading: boolean;
     error: string | null;
-    context: any;
     startNewMessagingThread: () => void;
     getThreads: () => void;
     selectThread: (id: string) => void;
@@ -34,27 +36,29 @@ export const createChatSlice: StateCreator<State, [], [], ChatSlice> = (
 ) => ({
   chat: {
     threads: {},
-    selectedThreadId: undefined,
+    selectedThreadId: null,
+    selectedThread: null,
     discussion: [],
     isLoadingThreads: false,
     isLoadingSelectedThread: false,
     isChatResponseEnded: true,
+    isSendMessageLoading: false,
     error: null,
-    context: undefined, // context comes from host
     getThreads: async () => {
-      // await processGetThreadsFlow(set, get);
+      await processGetThreadsFlow(set, get);
     },
     startNewMessagingThread: () => {
-      // set((state) => ({
-      //   chat: {
-      //     ...state.chat,
-      //     selectedThreadId: undefined,
-      //     discussion: [],
-      //   },
-      // }));
+      set((state) => ({
+        chat: {
+          ...state.chat,
+          selectedThreadId: null,
+          selectedThread: null,
+          discussion: [],
+        },
+      }));
     },
-    selectThread: async (id: string) => {
-      // await selectThreadFlow(set, get, id);
+    selectThread: (threadId: string) => {
+      selectThreadFlow(set, get, threadId);
     },
     deleteThread: async (id: string) => {
       // await deleteThreadFlow(set, get, id);

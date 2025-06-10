@@ -5,13 +5,13 @@ import { DiscussionWrapper } from "./discussion-wrapper/discussion-wrapper";
 import { InputField } from "./input-field/input-field";
 
 export const ChatDiscussion = () => {
-  const { discussion } = useStore().chat;
+  const { selectedThread } = useStore().chat;
 
   // Auto-scroll to bottom when discussion updates
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     autoScrollToBottom(scrollContainerRef);
-  }, [discussion]);
+  }, [selectedThread]);
 
   return (
     <main className="flex flex-col items-center h-screen w-screen p-4 sm:p-7">

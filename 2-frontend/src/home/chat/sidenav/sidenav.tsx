@@ -32,14 +32,20 @@ export const SideNav = ({ children }: { children: React.ReactNode }) => {
   const { threads } = useStore().chat;
 
   useEffect(() => {
+    if (!threads) return;
+
     const threadsWithTimes: any = addHumanReadableTimesToThreads(
       Object.values(threads)
     );
     setUsableThreads(threadsWithTimes);
   }, [threads]);
 
-  const onSelectThread = (id: string) => {
-    selectThread(id);
+  const onSelectThread = (threadId: string) => {
+    console.log("SELCT");
+    console.log("threadId");
+    console.log(threadId);
+
+    selectThread(threadId);
     setMobileOpen(false);
   };
 
@@ -107,10 +113,14 @@ export const SideNav = ({ children }: { children: React.ReactNode }) => {
                             <PrevChatItem
                               key={i}
                               title={chat.title}
-                              id={chat.id}
-                              isSelected={chat.id === selectedThreadId}
-                              selectThread={(id) => onSelectThread(id)}
-                              deleteThread={(id) => deleteThread(id)}
+                              threadId={chat.threadId}
+                              isSelected={chat.threadId === selectedThreadId}
+                              selectThread={(threadId) =>
+                                onSelectThread(threadId)
+                              }
+                              deleteThread={(threadId) =>
+                                deleteThread(threadId)
+                              }
                             ></PrevChatItem>
                           ))}
                         </div>
@@ -204,10 +214,12 @@ export const SideNav = ({ children }: { children: React.ReactNode }) => {
                           <PrevChatItem
                             key={i}
                             title={chat.title}
-                            id={chat.id}
-                            isSelected={chat.id === selectedThreadId}
-                            selectThread={(id) => onSelectThread(id)}
-                            deleteThread={(id) => deleteThread(id)}
+                            threadId={chat.threadId}
+                            isSelected={chat.threadId === selectedThreadId}
+                            selectThread={(threadId) =>
+                              onSelectThread(threadId)
+                            }
+                            deleteThread={(threadId) => deleteThread(threadId)}
                           ></PrevChatItem>
                         ))}
                       </div>

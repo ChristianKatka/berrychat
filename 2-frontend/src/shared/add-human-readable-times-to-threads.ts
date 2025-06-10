@@ -5,7 +5,7 @@ export const addHumanReadableTimesToThreads = (rawThreads: any) => {
   const groups: Record<string, { title: string }[]> = {};
 
   for (const thread of rawThreads) {
-    const createdAt = new Date(thread.created_at);
+    const createdAt = new Date(thread.createdAtTimeStamp);
     let dateLabel: string;
 
     if (isToday(createdAt)) {
@@ -29,7 +29,7 @@ export const addHumanReadableTimesToThreads = (rawThreads: any) => {
     }
 
     groups[dateLabel].push({
-      title: formatTimestamp(thread.created_at),
+      title: formatTimestamp(thread.createdAtTimeStamp),
       ...thread,
     });
   }
@@ -38,7 +38,8 @@ export const addHumanReadableTimesToThreads = (rawThreads: any) => {
   for (const group of Object.values(groups)) {
     group.sort(
       (a: any, b: any) =>
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        new Date(b.createdAtTimeStamp).getTime() -
+        new Date(a.createdAtTimeStamp).getTime()
     );
   }
 

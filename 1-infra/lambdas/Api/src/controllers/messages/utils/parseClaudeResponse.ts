@@ -1,16 +1,11 @@
-import { Citation } from "../../../../../../models/thread";
+import { Citation, Message } from "../../../models/thread";
 
-export const parseClaudeResponse = (
-  rawClaudeResponse: any
-): {
-  parsedText: string;
-  citations: Citation[];
-} => {
+export const parseClaudeResponse = (rawClaudeResponse: any): Message => {
   if (
     !rawClaudeResponse?.content ||
     !Array.isArray(rawClaudeResponse.content)
   ) {
-    return { parsedText: "", citations: [] };
+    return { role: "assistant", content: "", citations: [] };
   }
 
   const textBlocks: string[] = [];
@@ -41,8 +36,8 @@ export const parseClaudeResponse = (
   }
 
   const combinedText = textBlocks.join("\n\n");
-  const parsedText = combinedText.replace(/\\n/g, "\n");
+  const content = combinedText.replace(/\\n/g, "\n");
   const citations = Array.from(citationMap.values());
 
-  return { parsedText, citations };
+  return { role: "assistant", content, citations };
 };

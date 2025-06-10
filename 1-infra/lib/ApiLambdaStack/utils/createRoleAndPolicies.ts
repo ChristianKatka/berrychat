@@ -8,7 +8,7 @@ export const createRoleAndPolicies = (stack: Construct) => {
 
   lambdaRole.addToPolicy(
     new iam.PolicyStatement({
-      actions: ["cognito-idp:*", "dynamodb:*", "logs:*"],
+      actions: ["cognito-idp:*", "dynamodb:*", "logs:*", "ssm:*"],
       resources: ["*"],
     })
   );

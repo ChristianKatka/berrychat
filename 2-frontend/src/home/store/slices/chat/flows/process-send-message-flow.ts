@@ -1,55 +1,69 @@
 import { StoreApi } from "zustand";
 import { State } from "../../../state";
 import { sendSendMessageService } from "../../../../services/chat.service";
-import { Message } from "../../../../../models/message";
 import { parseClaudeResponse } from "./utils/parseClaudeResponse";
+import { checkIfItsNewThreadAndIfSoPutNewThreadWithOtherThreads } from "./utils/checkIfItsNewThreadAndIfSoPutNewThreadWithOtherThreads";
+import { Message, Thread } from "../../../../../models/thread";
 
 export const processSendMessageFlow = async (
   set: StoreApi<State>["setState"],
   get: StoreApi<State>["getState"],
   message: string
 ) => {
-  const prevDiscussion = get().chat.discussion;
-  const selectedThreadId = get().chat.selectedThreadId;
-
-  const newDiscussion: Message[] = [
-    ...prevDiscussion,
-    { role: "User", text: message },
-  ];
-
   set((state) => ({
     chat: {
       ...state.chat,
-      discussion: newDiscussion,
+      isSendMessageLoading: true,
     },
   }));
+
+  const idToken = get().auth.tokens.IdToken;
+  const selectedThread = get().chat.selectedThread;
+
+  const userMessage: Message = { role: "user", content: message };
   try {
-    const idToken = get().auth.tokens.IdToken;
+    // THIS IS BRAND NEW THREAD
+    if (!selectedThread) {
+      console.log("new thread, discussion starts");
 
-    const res = await sendSendMessageService(
-      idToken,
-      message,
-      selectedThreadId
-    );
-    const { parsedText, citations } = parseClaudeResponse(res.claudeResponse);
-    // mocking api res for now
-    const currentDiscussion = get().chat.discussion;
-    const updatedDiscussion: Message[] = [
-      ...currentDiscussion,
-      {
-        role: "Assistant",
-        text: parsedText,
-        citations,
-      },
-    ];
+      const discussion: Message[] = [userMessage];
 
-    set((state) => ({
-      chat: {
-        ...state.chat,
-        selectedThreadId: res.threadId,
-        discussion: updatedDiscussion,
-      },
-    }));
+      const thread: Thread = await sendSendMessageService(
+        idToken,
+        discussion,
+        null,
+        null
+      );
+
+      set((state) => ({
+        chat: {
+          ...state.chat,
+          isSendMessageLoading: false,
+          threads: { ...state.chat.threads, [thread.threadId]: thread },
+          selectedThread: thread,
+          selectedThreadId: thread.threadId,
+        },
+      }));
+    } else {
+      console.log("existing thread, discussion continues");
+      const discussion: Message[] = [...selectedThread.discussion, userMessage];
+      const thread: Thread = await sendSendMessageService(
+        idToken,
+        discussion,
+        selectedThread.createdAtTimeStamp,
+        selectedThread.threadId
+      );
+
+      set((state) => ({
+        chat: {
+          ...state.chat,
+          isSendMessageLoading: false,
+          threads: { ...state.chat.threads, [thread.threadId]: thread },
+          selectedThread: thread,
+          selectedThreadId: thread.threadId,
+        },
+      }));
+    }
   } catch (err) {
     console.log("error:");
     console.log(err);
@@ -57,6 +71,7 @@ export const processSendMessageFlow = async (
     set((state) => ({
       chat: {
         ...state.chat,
+        isSendMessageLoading: false,
         error: "Failed to send message",
       },
     }));

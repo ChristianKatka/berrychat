@@ -1,10 +1,10 @@
-import { SendHorizonal } from "lucide-react";
+import { Loader2, SendHorizonal } from "lucide-react";
 import { useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { useStore } from "../../store/state";
 
 export const InputField = () => {
-  const { isChatResponseEnded, sendMessage } = useStore().chat;
+  const { sendMessage, isSendMessageLoading } = useStore().chat;
 
   const [userInput, setUserInput] = useState("");
 
@@ -21,7 +21,7 @@ export const InputField = () => {
     console.log("handleSendMessage");
 
     const trimmed = userInput.trim();
-    if (trimmed === "" || !isChatResponseEnded) return;
+    if (trimmed === "") return;
     sendMessage(userInput);
     setUserInput("");
   };
@@ -38,11 +38,21 @@ export const InputField = () => {
         onChange={(event) => setUserInput(event.target.value)}
         onKeyDown={handleKeyDown}
       />
+
       <button
+        disabled={isSendMessageLoading}
         onClick={handleSendMessage}
-        className="cursor-pointer absolute bottom-2.5 right-2.5 text-white hover:text-gray-300"
+        className={`cursor-pointer absolute bottom-2.5 right-2.5 text-white hover:text-gray-300 ${
+          isSendMessageLoading ? "opacity-50 cursor-not-allowed" : ""
+        }`}
       >
-        <SendHorizonal size={18} />
+        {isSendMessageLoading ? (
+          <div className="flex items-center justify-center gap-2">
+            <Loader2 className="animate-spin" size={20} />
+          </div>
+        ) : (
+          <SendHorizonal size={18} />
+        )}
       </button>
     </div>
   );

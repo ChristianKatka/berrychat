@@ -16,14 +16,14 @@ import {
 interface Props {
   title: string;
   isSelected: boolean;
-  id: string;
-  selectThread: (id: string) => void;
-  deleteThread: (id: string) => void;
+  threadId: string;
+  selectThread: (threadId: string) => void;
+  deleteThread: (threadId: string) => void;
 }
 
 export const PrevChatItem = ({
   title,
-  id,
+  threadId,
   isSelected,
   selectThread,
   deleteThread,
@@ -31,10 +31,9 @@ export const PrevChatItem = ({
   return (
     <div className="flex items-center justify-between pl-3">
       <div
-        onClick={() => selectThread(id)}
-        className={`w-full flex justify-between items-center rounded-md p-1 pl-2 cursor-pointer transition-all duration-300 ease-in-out hover:bg-gray-200 hover:scale-[1.01] ${
-          isSelected ? "bg-gray-300 dark:bg-gray-700" : ""
-        }`}
+        onClick={() => selectThread(threadId)}
+        className={`w-full flex justify-between items-center rounded-md p-1 pl-2 cursor-pointer transition-all duration-300 ease-in-out hover:bg-gray-700 hover:scale-[1.01]`}
+        style={isSelected ? { backgroundColor: "#494949" } : {}}
       >
         <TooltipProvider>
           <Tooltip>
@@ -58,7 +57,7 @@ export const PrevChatItem = ({
           <DropdownMenuContent align="end">
             <DropdownMenuItem
               className="cursor-pointer"
-              onClick={() => deleteThread(id)}
+              onClick={() => deleteThread(threadId)}
             >
               <Trash className="w-4 h-4" />
               Delete

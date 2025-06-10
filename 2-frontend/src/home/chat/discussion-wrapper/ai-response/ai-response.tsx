@@ -1,13 +1,12 @@
-import { CopyIcon, ThumbsDownIcon, ThumbsUpIcon } from "lucide-react";
-import { Logo } from "../../../../components/my/logo";
 import { Loader2 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import { Logo } from "../../../../components/my/logo";
 
 interface Props {
-  text: any;
+  content: any;
   citations: any;
 }
-export const AiResponse = ({ text, citations }: Props) => {
+export const AiResponse = ({ content, citations }: Props) => {
   return (
     <section className="inline-block w-fit max-w-[80%]">
       <div className="flex">
@@ -17,7 +16,7 @@ export const AiResponse = ({ text, citations }: Props) => {
         </div>
 
         <div className="flex-1 p-3">
-          {text.length === 0 ? (
+          {content.length === 0 ? (
             <Loader2
               size="24"
               className="animate-spin text-gray-500"
@@ -26,7 +25,7 @@ export const AiResponse = ({ text, citations }: Props) => {
           ) : (
             <div className="p-2 [&_p]:mb-4 [&_h1]:mb-6 [&_ul]:ml-5 [&_ul]:mb-4 [&_pre]:mb-4">
               <div className="prose prose-sm dark:prose-invert">
-                <ReactMarkdown>{text}</ReactMarkdown>
+                <ReactMarkdown>{content}</ReactMarkdown>
               </div>
               {citations.length > 0 && (
                 <div className="mt-6">
@@ -51,39 +50,6 @@ export const AiResponse = ({ text, citations }: Props) => {
               )}
             </div>
           )}
-
-          {/* {isChatResponseEnded ? (
-            <div className="flex pt-1">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-9 w-9"
-                aria-label="ThumbsUp"
-                onClick={giveThumbsUp}
-              >
-                <ThumbsUpIcon className="h-9 w-9" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-9 w-9"
-                aria-label="ThumbsDown"
-                onClick={giveThumbsDown}
-              >
-                <ThumbsDownIcon className="h-9 w-9" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-9 w-9"
-                aria-label="Copy"
-                onClick={copyText}
-              >
-                <CopyIcon className="h-9 w-9" />
-              </Button>
-              <ReportDialog runId={metaData.run_id}></ReportDialog>
-            </div>
-          ) : null} */}
         </div>
       </div>
     </section>
