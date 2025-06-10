@@ -25,14 +25,14 @@ function App() {
             </UnAuthenticatedRoute>
           }
         />
-        <Route
+        {/* <Route
           path="/register"
           element={
             <UnAuthenticatedRoute>
               <Register />
             </UnAuthenticatedRoute>
           }
-        />
+        /> */}
         <Route
           path="/"
           element={
