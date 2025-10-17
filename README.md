@@ -3,7 +3,7 @@
 This is a lightweight chatbot server built with:
 
 -  **Express** framework
--  ##React##
+-  **React**
 
 ## 🚀 Features
 
