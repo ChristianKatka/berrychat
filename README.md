@@ -2,12 +2,12 @@
 
 This is a lightweight chatbot server built with:
 
-- ⚡ **Express** framework
-- 🔄 **Server-Sent Events (SSE)** for real-time streaming responses
+-  **Express** framework
+-  ##React##
 
 ## 🚀 Features
 
-- Streams Claude AI responses to the client in real time
+- Chatbot answers to your business questions
 - Uses Anthropic's official Node.js SDK
 - Minimal setup, easy to deploy to AWS Lambda
 
