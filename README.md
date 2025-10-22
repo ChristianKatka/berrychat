@@ -1,4 +1,4 @@
-# 🧠 Claude Chatbot (Anthropic API + Express + SSE)
+# 🧠 Claude Chatbot (Anthropic API + Express + React)
 
 This is a lightweight chatbot server built with:
 
